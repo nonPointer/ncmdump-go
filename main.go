@@ -33,6 +33,9 @@ import (
 	"time"
 )
 
+// version 由 release 构建通过 -ldflags "-X main.version=..." 注入。
+var version = "dev"
+
 var (
 	coreKey = mustHex("687A4852416D736F356B496E62617857")
 	metaKey = mustHex("2331346C6A6B5F215C5D2630553C2728")
@@ -331,8 +334,13 @@ func main() {
 		delSrc     = flag.Bool("delete-src", false, "解密成功后删除源 .ncm")
 		delLQ      = flag.Bool("delete-lq", false, "已存在低音质版本时删除它并重新解密")
 		dedupApply = flag.Bool("dedup-apply", false, "实际删除重复文件(默认仅报告)")
+		showVer    = flag.Bool("version", false, "打印版本并退出")
 	)
 	flag.Parse()
+	if *showVer {
+		fmt.Println("ncmdump", version)
+		return
+	}
 	if flag.NArg() > 0 { // 允许位置参数指定目录
 		*dir = flag.Arg(0)
 	}
@@ -358,7 +366,7 @@ func main() {
 		return nil
 	})
 
-	log.printf("=== ncmdump 启动 dir=%s workers=%d 发现 %d 个 .ncm ===", *dir, *workers, len(files))
+	log.printf("=== ncmdump %s 启动 dir=%s workers=%d 发现 %d 个 .ncm ===", version, *dir, *workers, len(files))
 
 	var (
 		jobs            = make(chan string)
