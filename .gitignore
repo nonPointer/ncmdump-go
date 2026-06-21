@@ -1,0 +1,14 @@
+# 编译产物
+/ncmdump
+/ncmdump.exe
+/dist/
+
+# 运行时
+*.log
+
+# 解密输出
+*.mp3
+*.flac
+
+# 系统
+.DS_Store
